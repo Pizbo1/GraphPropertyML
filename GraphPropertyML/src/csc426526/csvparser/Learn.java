@@ -5,6 +5,13 @@ package csc426526.csvparser;
 
 import java.io.IOException;
 
+import csc426526.visitor.aggregation.AggregatorVisitor;
+import csc426526.visitor.aggregation.CountAggregator;
+import csc426526.visitor.training.CountVisitor;
+import csc426526.visitor.training.TrimVisitor;
+import csc426526.visitor.training.Visitor;
+
+
 /**
  * @author Brandon Baggett
  * This file is the driver file, the user shouldn't have to change anything except for the parameter 
@@ -127,8 +134,10 @@ public class Learn {
 		 * instead of the INPUTFOLDER
 		 */
 		try {
-			f = new Folder(p, TRIMFOLDER, "csv");
-			f.accept(TRAINMODEL, p);
+			if(!SKIPTRAIN) {
+				f = new Folder(p, TRIMFOLDER, "csv");
+				f.accept(TRAINMODEL, p);
+			}
 		} catch (IOException e) {
 			System.out.println("Training failure");
 			e.printStackTrace();

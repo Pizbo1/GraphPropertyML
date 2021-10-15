@@ -1,8 +1,12 @@
-package csc426526.csvparser;
+package csc426526.visitor.training;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import csc426526.csvparser.CSVFile;
+import csc426526.csvparser.Folder;
+import csc426526.csvparser.Parameters;
 
 /*
  * TODO Add parallelism

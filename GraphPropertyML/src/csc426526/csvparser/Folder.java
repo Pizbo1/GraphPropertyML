@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 //import java.util.Scanner;
 
+import csc426526.visitor.aggregation.AggregatorVisitor;
+import csc426526.visitor.training.Visitor;
+
 /**
  * @author Brandon Baggett
  *
@@ -42,7 +45,6 @@ public class Folder {
 			if (fileEntry.isFile()) {
 				temp = fileEntry.getName();
 				if ((temp.substring(temp.lastIndexOf('.') + 1, temp.length()).toLowerCase()).equals(fileType)) {
-					//System.out.println("File = " + file.getAbsolutePath()+ "\\" + fileEntry.getName());
 					l.add(fileEntry.getName());
 					numFiles++;
 				}
@@ -55,7 +57,9 @@ public class Folder {
 		return folderName;
 	}
 	
-	// I don't think I need this
+	/*
+	 *  I'm not using this, but it could be a useful helper function one day
+	 */
 	public void updateFiles(String fileType) {
 		buildFiles(fileType);
 	}

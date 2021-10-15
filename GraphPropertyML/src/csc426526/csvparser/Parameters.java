@@ -3,6 +3,8 @@
  */
 package csc426526.csvparser;
 
+import csc426526.visitor.training.Visitor;
+
 /**
  * @author Brandon Baggett
  * This is just a structure object to make holding

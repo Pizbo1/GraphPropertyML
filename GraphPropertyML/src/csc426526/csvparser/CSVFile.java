@@ -11,6 +11,9 @@ package csc426526.csvparser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
+import csc426526.visitor.training.Visitor;
+
 import java.io.BufferedReader;
 
 public class CSVFile {

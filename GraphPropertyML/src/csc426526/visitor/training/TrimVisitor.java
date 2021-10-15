@@ -1,10 +1,13 @@
 /**
  * 
  */
-package csc426526.csvparser;
+package csc426526.visitor.training;
 
 import java.io.FileWriter;
 import java.io.IOException;
+
+import csc426526.csvparser.CSVFile;
+import csc426526.csvparser.Parameters;
 
 /**
  * @author Brandon Baggett

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package csc426526.csvparser;
+package csc426526.visitor.aggregation;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,9 +11,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import csc426526.csvparser.Folder;
+import csc426526.csvparser.Parameters;
+
 /**
  * @author Brandon Baggett
- * This crashes if you have the summary file already in the directory
+ * This crashes if you have the summary file already in the output directory
  * TODO fix that
  */
 public class CountAggregator implements AggregatorVisitor {
@@ -99,8 +102,6 @@ public class CountAggregator implements AggregatorVisitor {
 	
 	/*
 	 * Takes a file updates the count list for each attribute that it finds. 
-	 * TODO make sure this is actually checking the attributes correctly and not assuming based on
-	 * position
 	 */
 	private List<Integer> updateCounts(List<String> attributes, List<Integer> counts, BufferedReader file){
 		List<Integer> c = pad(attributes, counts);
@@ -216,6 +217,4 @@ public class CountAggregator implements AggregatorVisitor {
 		}
 		return f;
 	}
-	
-	
 }
