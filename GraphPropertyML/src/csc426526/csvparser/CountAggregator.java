@@ -26,6 +26,7 @@ public class CountAggregator implements AggregatorVisitor {
 		int size = fileList.size();
 		List<String> attributes = new ArrayList<String>();
 		List<Integer> counts = new ArrayList<Integer>();
+		float percent;
 
 		//System.out.println(size);
 		try {
@@ -60,9 +61,11 @@ public class CountAggregator implements AggregatorVisitor {
 			w.append("Aggregate Summary\n"); // this is just here so that it crashes if you
 											// dont delete the summary file between runs
 											// I will fix it later
+			w.append("attribute : attrCount: totalCount : percent\n");
 			for(int i = 0; i < size; i++) {
+				percent = counts.get(i).floatValue()/counts.get(size-1).floatValue();
 				w.append(attributes.get(i) + ": " + counts.get(i) + ": "
-										+ counts.get(size-1) + "\n");
+										+ counts.get(size-1) + ": " + percent + "\n");
 				//System.out.println(attributes.get(i) + ": " + counts.get(i));
 			}
 		} catch (IOException e) {
