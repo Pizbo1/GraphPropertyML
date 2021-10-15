@@ -4,7 +4,6 @@
 package csc426526.csvparser;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -28,79 +27,81 @@ public class CountAggregator implements AggregatorVisitor {
 		List<Integer> counts = new ArrayList<Integer>();
 		float percent;
 
-		//System.out.println(size);
+		/*
+		 * Iterate through each file in the file list and make sure there aren't any new attributes
+		 * and then update the attribute counts
+		 */
 		try {
 			for(int i = 0; i < size; i++) {
 				br = new BufferedReader(new FileReader(p.getOutputFolder() + p.getFileSeperator() + fileList.get(i)));
 				attributes = updateAttributes(attributes, br);
-				// Theres probably a more elegant way to do this, but im tired and need a way to reset to pointer to the 
-				// beginning of the file
+				br.close();
+				/*
+				 * There is probably a more elegant way to do this, but I am not sure how atm
+				 * maybe look into RandomAccessFiles?
+				*/
 				br = new BufferedReader(new FileReader(p.getOutputFolder() + p.getFileSeperator() + fileList.get(i)));
 				counts = updateCounts(attributes, counts, br);
-				//ystem.out.println("here");
+				br.close();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block	
+			System.out.print("Error: File not found, in CountAggregator.visit");
 			e.printStackTrace();
-		}
-		
-		try {
-			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error: IOException in CountAggregator.visit when iterating through individual summary files");
 			e.printStackTrace();
 		}
-	
-		System.out.println(attributes);
-		System.out.println(counts);
 		
-		// make a filewrite and do the things
+		/*
+		 * Make the new file and write the results
+		 */
 		FileWriter w = createFileWriter(p.getOutputFolder() + p.getFileSeperator() + "CountAggregationSummary.txt");
 		size = attributes.size();
 		try {
 			w.append("Aggregate Summary\n"); // this is just here so that it crashes if you
-											// dont delete the summary file between runs
+											// don't delete the summary file between runs
 											// I will fix it later
 			w.append("attribute : attrCount: totalCount : percent\n");
 			for(int i = 0; i < size; i++) {
 				percent = counts.get(i).floatValue()/counts.get(size-1).floatValue();
 				w.append(attributes.get(i) + ": " + counts.get(i) + ": "
 										+ counts.get(size-1) + ": " + percent + "\n");
-				//System.out.println(attributes.get(i) + ": " + counts.get(i));
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			w.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Error: IOException in CountAggregator.visit when summarizing results");
 			e.printStackTrace();
 		}
 	}
 	
+	/*
+	 * Iterate through a file and make add any new attributes to the attributes list
+	 */
 	private List<String> updateAttributes(List<String> attributes, BufferedReader file){
 		 String row;
 		 String[] data; 
 		 List<String> l = attributes;
-		 int index = -1;
 		 try {
 			 while ((row = file.readLine()) != null) {
 				 data = row.split(":");
-				 if((index = checkAttribute(data[0], attributes)) >= 0) {
+				 if((checkAttribute(data[0], attributes)) >= 0) {
 					 // Do nothing, the attribute is already in the list
 				 } else {
 					 l.add(data[0]);
 				 }
 			}
 		} catch (IOException e) {
-			System.out.println("Failed to parse the file");
+			System.out.println("Error: Failed to close the file in CountAggregator.updateAttributes");
 			e.printStackTrace();
 		}
 		return l;
 	}
 	
+	/*
+	 * Takes a file updates the count list for each attribute that it finds. 
+	 * TODO make sure this is actually checking the attributes correctly and not assuming based on
+	 * position
+	 */
 	private List<Integer> updateCounts(List<String> attributes, List<Integer> counts, BufferedReader file){
 		List<Integer> c = pad(attributes, counts);
 		String row;
@@ -108,7 +109,6 @@ public class CountAggregator implements AggregatorVisitor {
 		int index = -1;
 		Integer value;
 		
-		//System.out.println(c);
 		try {
 			while ((row = file.readLine()) != null) {
 				data = row.split(":");
@@ -118,11 +118,11 @@ public class CountAggregator implements AggregatorVisitor {
 					c.set(index, value);
 				} else {
 					// This shouldn't be reachable
-					System.out.println("Error parsing the summary text files");
+					System.out.println("Error parsing the summary text files in CountAggregator.updateCounts");
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Failed to parse the file");
+			System.out.println("Erro: IOException in CountAggregator.updateCounts");
 			e.printStackTrace();
 		}
 		return c;
@@ -159,6 +159,9 @@ public class CountAggregator implements AggregatorVisitor {
 	/*
 	 * Sort the text file again and get the counts for each attribute
 	 * make sure that each count has an attribute to go to
+	 * 
+	 * This currently isn't being used, but it could be a useful helper
+	 * function
 	 */
 	private List<Integer> getCounts(List<String> attributes, BufferedReader aggregateFile) {
 		String row;
@@ -171,7 +174,7 @@ public class CountAggregator implements AggregatorVisitor {
 				l.add(Integer.parseInt(data[1].trim()));
 			}
 		} catch (IOException e) {
-			System.out.println("Failed to parse the aggregate file");
+			System.out.println("Failed to parse the aggregate file in CountAggregator.getCounts");
 			e.printStackTrace();
 		}
 		return l;
@@ -181,6 +184,9 @@ public class CountAggregator implements AggregatorVisitor {
 	/*
 	 * Sort through the txt file and return a list of each of the names
 	 * of the different attributes
+	 * 
+	 * This currently isn't being used, but it could be a useful helper
+	 * function
 	 */
 	private List<String> getAttributes(BufferedReader aggregateFile) {
 		String row;
@@ -193,12 +199,11 @@ public class CountAggregator implements AggregatorVisitor {
 				l.add(data[0]);
 			}
 		} catch (IOException e) {
-			System.out.println("Failed to parse the aggregate file");
+			System.out.println("Failed to parse the aggregate file in CountAggregator.getAttributes");
 			e.printStackTrace();
 		}
 		return l;
 	}
-
 
 	private FileWriter createFileWriter(String fileName) {
 		FileWriter f = null;

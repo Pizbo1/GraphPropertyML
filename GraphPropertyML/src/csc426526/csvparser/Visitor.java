@@ -16,15 +16,11 @@ public interface Visitor {
 		List<String> l = new ArrayList<String>();
 		CSVFile file;
 		l = f.getFileList();
-		//System.out.println("FileCounnt: " + f.getFileCount());
 		for(int i=0; i< f.getFileCount(); i++) {
-			//System.out.println(i);
-			//System.out.println("Visitor: " + l.get(i));
 			file = new CSVFile(l.get(i), f.getFolderNamer(), p);
-			v.visit(file, p);
+			file.accept(this, p);
 			file.close();
 		}
 	}
-	
 	void visit(CSVFile f, Parameters p);
 }

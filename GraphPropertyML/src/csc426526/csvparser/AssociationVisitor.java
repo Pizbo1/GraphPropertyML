@@ -4,7 +4,7 @@
 package csc426526.csvparser;
 
 /**
- * @author brandon
+ * @author Brandon Baggett
  *
  */
 public class AssociationVisitor implements Visitor {
@@ -17,6 +17,14 @@ public class AssociationVisitor implements Visitor {
 		
 		
 		// this shouldnt be too hard to convert to an aggregate version... I think....
+		
+		int i = 1;
+		boolean keepGoing = true;
+		
+		while(keepGoing) {
+			
+		}
+		
 	}
 	
 	private long calcSup() {
@@ -54,7 +62,7 @@ public class AssociationVisitor implements Visitor {
 		return;
 	}
 
-	private void findFrequent() {
+	private void findFrequentISets(int i) {
 		// Scan the data base and find supp for each itemset in C_i+1
 		// add to F_i
 		// add to Final

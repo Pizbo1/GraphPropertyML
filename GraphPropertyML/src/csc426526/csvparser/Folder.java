@@ -26,7 +26,7 @@ public class Folder {
 	
 	/* The construction of this class should learn how many files there are
 	* passing the folder is unnecessary, but it makes for cleaner code than keeping up
-	* with a boolean and having a if-else statement
+	* with a boolean and having an if-else statement
 	*/
 	public Folder(Parameters p, String folder, String fileType) {
 		file = new File(folder);
@@ -66,12 +66,6 @@ public class Folder {
 	
 	public List<String> getFileList(){
 		return fileList;
-	}
-	
-	// I guess I don't this
-	// I will probably delete it later
-	public void close() {
-		//file.close();
 	}
 	
 	public void accept(Visitor v, Parameters p) throws IOException {
