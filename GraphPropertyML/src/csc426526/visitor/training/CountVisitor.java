@@ -59,7 +59,6 @@ public class CountVisitor implements Visitor {
 			e.printStackTrace();
 		}
 		
-		
 		try {
 			for(int i = 0; i < location; i++) {
 				//System.out.println(attributes.get(i) + ": " + count.get(i));

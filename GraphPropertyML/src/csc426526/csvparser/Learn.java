@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import csc426526.visitor.aggregation.AggregatorVisitor;
 import csc426526.visitor.aggregation.CountAggregator;
+import csc426526.visitor.training.AssociationVisitor;
 import csc426526.visitor.training.CountVisitor;
 import csc426526.visitor.training.TrimVisitor;
 import csc426526.visitor.training.Visitor;
@@ -44,15 +45,15 @@ public class Learn {
 	/*
 	 * The input folder for un-trimmed CSV files
 	 */
-	private static final String INPUTFOLDER = "C:\\Users\\Brandon\\Documents\\School\\PhaseSpaceLearning\\Input\\input";  
+	private static final String INPUTFOLDER = "/home/brandon/Documents/temp/input";  
 	/*
 	 *  The folder that the trimmed CSV files go in
 	 */
-	private static final String TRIMFOLDER = "C:\\Users\\Brandon\\Documents\\School\\PhaseSpaceLearning\\Trimmed";
+	private static final String TRIMFOLDER = "/home/brandon/Documents/temp/trimmed";
 	/*
 	 *  The folder for the output results
 	 */
-	private static final String OUTPUTFOLDER = "C:\\Users\\Brandon\\Documents\\School\\PhaseSpaceLearning\\Output";
+	private static final String OUTPUTFOLDER = "/home/brandon/Documents/temp/output";
 	// ------------------------------------------------------------------------------------------------------------------
 	
 	// Misc Parameters
@@ -74,7 +75,7 @@ public class Learn {
 	/*
 	 *  The training model to be used which must be an implementation of the Visitor interface
 	 */
-	private static final Visitor TRAINMODEL = new CountVisitor();
+	private static final Visitor TRAINMODEL = new AssociationVisitor();
 	/*
 	 * The training model to be used which must be an implementation of the Visitor interface
 	 */
@@ -92,7 +93,7 @@ public class Learn {
 	 *  If true then the program will skip the initial trimming phase
 	 *  this assumes that the CSV files are in the TRIMFOLDER and properly formated
      */
-	private static final boolean SKIPTRIM = false; 
+	private static final boolean SKIPTRIM = true; 
 	/*
 	 * If true then the program will skip the training phase for individual files
 	 */
@@ -101,7 +102,7 @@ public class Learn {
 	 *  If true then the program will not aggregate the results in the 
 	 *  OUTPUTFOLDER, you need a separate visitor to handle the aggregation
 	 */
-	private static final boolean SKIPAGGREGATE = false;
+	private static final boolean SKIPAGGREGATE = true;
 	// ------------------------------------------------------------------------------------------------------------------
 	
 	public static void main(String[] args) {
