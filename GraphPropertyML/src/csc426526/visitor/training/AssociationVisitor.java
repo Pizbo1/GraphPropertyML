@@ -90,11 +90,10 @@ public class AssociationVisitor implements Visitor {
 		 * this isn't set in stone, but I think I need my "a" to be the attribute names
 		 * and then I will do a lookup for the indexes and then search based on that
 		 */
+		finalFreq.put(1, a);
 		
-		for(int i = 0; i < aSize; i++) {
-			//a = null; // I don't think this is needed, but I want to ensure it is reset between each run
-			// I think I want to pass a evertime bc it is frequent i-1 itemset
-			//a = findFrequentISets(i, attributes, a, rowCount, data);
+		for(int i = 2; i < 4/*aSize*/; i++) {
+			a = findFrequentISets(i, attributes, a, rowCount, data);
 			if(a == null) {
 				/*
 				 * There are no more frequent itemsets and we can exit
@@ -109,8 +108,11 @@ public class AssociationVisitor implements Visitor {
 		}
 		// write to output
 		try {
-			System.out.println("" + a);
-			w.append("" + a);
+			for(int i = 1; i < finalFreq.size(); i++) {
+				System.out.println(i + " : " + finalFreq.get(i));
+			}
+			System.out.println(finalFreq.size());
+			w.append("size: " + finalFreq);
 			w.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -189,13 +191,19 @@ public class AssociationVisitor implements Visitor {
 	/*
 	 * @param a: is a list of the frequent i-1 itemsets
 	 * 
+	 * this builds a list of all i-itemsets from attributes
+	 * that appear in a
 	 */
+	
+	// I need to make the returned object a string array 
 	private List<String> buildCk(List<String> a, int i) {
 		List<String> output = null;
 		List<String> temp = null;
 		int aSize = a.size();
-
+		
+		//System.out.println(a/*.get(0).split(",")*/);
 		output = addAttributes(a.get(0).split(","), a, output, i, 0);
+		//System.out.println(output);
 		if(output == null) {
 			/*
 			 *  If it can't make a i-itemset on the first iteration then
@@ -204,19 +212,26 @@ public class AssociationVisitor implements Visitor {
 			 */
 			return null;
 		}
-		for(int j = 0; j < aSize; j++) {
+		for(int j = 1; j < aSize; j++) {
 			temp = null;
 			temp = addAttributes(a.get(j).split(","), a, output, i, j);
 			output.addAll(temp);
 		}
 		
+		//System.out.println("here: " + output);
 		return output;
 	}
 	
 	/*
 	 * This could probably use a better name
 	 * It takes a i-1 attribute list and then adds any other attributes
+	 * that appear in the other frequent i-1 itemsets
 	 * 
+	 * @param a: an array of 1 set of frequent i-1 itemsets
+	 * @param b: the list of all frequent i-1 itemsets
+	 * @param current: the list of current i-itemsets build in previous iterations of this method call
+	 * @param i: the size itemset we are currently building
+	 * @param index: the index of 
 	 * 
 	 */
 	private List<String> addAttributes(String[] a, List<String> b, List<String> current, int i, int index){
@@ -230,16 +245,22 @@ public class AssociationVisitor implements Visitor {
 		 * to make adding the i-itemsets to output easier 
 		 */
 		prefix = a[0];
-		for(int j=1; j < i; j++) {
+		//System.out.println(a[0]);
+		for(int j=1; j < i-1; j++) {
+			//System.out.println("i: " + i + ": j : " + j);
+			//System.out.println(j + " : " + a[i]);
 			prefix = prefix + ", " + a[j];
 		}
-		
+		//System.out.println(prefix);
+		//System.out.println(b);
+		// I think I need to be checking to make sure I don't return any list larger than i
 		for(int j = index+1; j < bSize; j++) {
-			for(int k = 0; k < i; k++) {
-				for(int l = 0; l < i; l++) {
+			for(int k = 0; k < i-1; k++) {
+				for(int l = 0; l < i-1; l++) {
 					if(a[k] == b.get(j).split(",")[l]) {
 						// do nothing
 					} else {
+						//System.out.println(prefix);
 						prefix = prefix + ", " + b.get(j).split(",")[l];
 						output.add(prefix);					
 					}
@@ -271,19 +292,13 @@ public class AssociationVisitor implements Visitor {
 		List<String> output = new ArrayList<String>();
 		int size = attributes.size();
 
-		/*
-		 * I need to be doing something with j here
-		 * probably using it to iterate through the data map
-		 * but idk rn
-		 */
-		//for(int j = 0; i < size; i++) {
 		output = buildCk(a, i);
-		output = trimCk(output, i, rowCount, data, attributes);
-			/*
-			 * from here I need to calculate which of the remaining itemsets are frequent
-			 * and add them to the output
-			 */
-		//}
+		//output = trimCk(output, i, rowCount, data, attributes);
+		/*
+		 * from here I need to calculate which of the remaining itemsets are frequent
+		 * and add them to the output
+		 */
+
 		return output;
 	}
 	
@@ -317,78 +332,3 @@ public class AssociationVisitor implements Visitor {
 		return l;
 	}
 }
-
-// I will remove all of these once I get this working
-
-// This was the original builCk method
-
-
-/*
- * Iterate through each frequent i-1 set in a
- * Split each frequent set into its i-1 individual attributes
- * if the singles list is empty or the attribute isn't in the list yet
- * then add it to the list, otherwise do nothing
- * 
- * I don't think I am going to use this method any more
- */
-//for(int j = 0; j < aSize; j++) {
-//	line = a.get(j).split(",");
-//	for(int k = 0; k < i-1; k++) {
-//		if(singles == null) {
-//			singles.add(line[k]);
-//		} else if(singles.indexOf(line[k]) == -1) {
-//			singles.add(line[k]);
-//		}
-		// else do nothing because the attribute is already in the list
-//	}
-//}
-
-
-/*
- * Build the output list of all i-itemsets from attributes that appear
- * in the list "a"
- */
-//singlesSize = singles.size();
-//for(int j = 0; j < singlesSize; j++) {
-	
-//}
-
-
-//-----------------------------------------------------------------------------------
-// second attempt
-/*
- * This method is based on taking each of the i-1 itemsets and then adding each individual element from
- * the other itemsets if they i itemset doesn't already exist
- */
-
-
-//--------------------------------------------------------------------------------------------------------------------
-// this was the original checkSup method
-/*
- * Iterate through each attribute in the rule, then through each row of the data map
- * and check the column that corresponds to the attribute we are considering
- * and sum of the values 
- * 
- * this isn't right, we are checking for any rule, not the combination
- * and we are double counting
- * 
- * i.e., if the rule is a,b,c
- * then it counts each a, then b, then c
- * 
- * maybe use recursin to fix
- */
-//for(int i = 0; i < aSize; i++) {
-	/*
-	 * Get the location in the map that corresponds to the attribute we are currently
-	 * looking at ("i" is for finding the column the attribute is in
-	 * and "j" is for iterating through the data file by row)
-	 * 
-	 * note, this only works because we are looking at a single file
-	 * if we did this while aggregating, then the indexes might not line up
-	 */
-//	index = attributes.indexOf(a.get(i));
-//	for(int j = 0; j < dSize; j++) {
-//		count += Integer.parseInt(data.get(index)[j]);
-//	}
-//}
-

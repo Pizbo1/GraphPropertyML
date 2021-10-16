@@ -11,6 +11,12 @@ import csc426526.visitor.training.Visitor;
  * and passing the program's parameters easier
  */
 public class Parameters {
+	/*
+	 * Just brainstorming here, but I might be able to make this abstract and then have a map from 
+	 * a String (name) to an instance of the parameters concrete classes, so I can pass different 
+	 * parameter sets depending on which training models I use
+	 */
+	
 	
 	// The input folder for un-trimmed CSV files
 	private String inputFolder;  
