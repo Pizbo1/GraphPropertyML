@@ -18,13 +18,13 @@ public class AssociationVisitor implements Visitor {
 	@Override
 	public void visit(CSVFile f, Parameters p) {
 		FileWriter w = createFileWriter(p.getOutputFolder() + p.getFileSeperator() + f.getFileName() + ".output.txt");
-		List<String> attributes = new ArrayList<String>();
-		Map<Integer, List<String>> finalFreq = new HashMap<Integer, List<String>>();
+		List<String[]> attributes = new ArrayList<String[]>();
+		Map<Integer, List<String[]>> finalFreq = new HashMap<Integer, List<String[]>>();
 		int location = 0;
 		String row;
 		String[] lineData;
 		Map<Integer, String[]> data = new HashMap<Integer, String[]>();
-		List<String> a = new ArrayList<String>();
+		List<String[]> a = new ArrayList<String[]>();
 		int rowCount = 0;
 		int aSize;
 		int dSize;
@@ -77,7 +77,7 @@ public class AssociationVisitor implements Visitor {
 			item.add(attributes.get(i));
 			sup = calcSup(item, rowCount, data, attributes);
 			if(sup >= minSup) {
-				a.add(attributes.get(i));
+				a.add(test);
 			}
 		}
 		
