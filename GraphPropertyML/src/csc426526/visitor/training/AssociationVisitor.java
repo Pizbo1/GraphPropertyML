@@ -239,7 +239,7 @@ public class AssociationVisitor implements Visitor {
 		int bSize = b.size();
 		String temp;
 		String prefix;
-		
+		testing new setup2
 		/*
 		 * Build a prefix string based on the i-1 attributes in a
 		 * to make adding the i-itemsets to output easier 
