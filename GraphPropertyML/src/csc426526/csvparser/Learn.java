@@ -8,6 +8,7 @@ import java.io.IOException;
 import csc426526.visitor.aggregation.AggregatorVisitor;
 import csc426526.visitor.aggregation.CountAggregator;
 import csc426526.visitor.training.AssociationVisitor;
+import csc426526.visitor.training.AssociationVisitor2;
 import csc426526.visitor.training.CountVisitor;
 import csc426526.visitor.training.TrimVisitor;
 import csc426526.visitor.training.Visitor;
@@ -75,7 +76,7 @@ public class Learn {
 	/*
 	 *  The training model to be used which must be an implementation of the Visitor interface
 	 */
-	private static final Visitor TRAINMODEL = new AssociationVisitor();
+	private static final Visitor TRAINMODEL = new AssociationVisitor2();
 	/*
 	 * The training model to be used which must be an implementation of the Visitor interface
 	 */

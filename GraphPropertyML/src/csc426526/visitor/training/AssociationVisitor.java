@@ -239,7 +239,6 @@ public class AssociationVisitor implements Visitor {
 		int bSize = b.size();
 		String temp;
 		String prefix;
-		testing new setup2
 		/*
 		 * Build a prefix string based on the i-1 attributes in a
 		 * to make adding the i-itemsets to output easier 
@@ -317,8 +316,8 @@ public class AssociationVisitor implements Visitor {
 	/* This method finds the index of the column containing the PD measure
 	 * so that we only have to check that column when trimming the CSV file
 	 */
-	private List<String> getAttributes(CSVFile f) {
-		List<String> l = new ArrayList<String>();
+	private List<String[]> getAttributes(CSVFile f) {
+		List<String[]> l = new ArrayList<String[]>();
 		try {
 			String row = f.getReader().readLine();
 			String[] data = row.split(",");
