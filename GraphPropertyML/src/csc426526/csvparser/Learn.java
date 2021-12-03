@@ -76,7 +76,7 @@ public class Learn {
 	/*
 	 *  The training model to be used which must be an implementation of the Visitor interface
 	 */
-	private static final Visitor TRAINMODEL = new AssociationVisitor2();
+	private static final Visitor TRAINMODEL = new CountVisitor();
 	/*
 	 * The training model to be used which must be an implementation of the Visitor interface
 	 */
@@ -94,7 +94,7 @@ public class Learn {
 	 *  If true then the program will skip the initial trimming phase
 	 *  this assumes that the CSV files are in the TRIMFOLDER and properly formated
      */
-	private static final boolean SKIPTRIM = true; 
+	private static final boolean SKIPTRIM = false; 
 	/*
 	 * If true then the program will skip the training phase for individual files
 	 */
@@ -103,7 +103,7 @@ public class Learn {
 	 *  If true then the program will not aggregate the results in the 
 	 *  OUTPUTFOLDER, you need a separate visitor to handle the aggregation
 	 */
-	private static final boolean SKIPAGGREGATE = true;
+	private static final boolean SKIPAGGREGATE = false;
 	// ------------------------------------------------------------------------------------------------------------------
 	
 	public static void main(String[] args) {
